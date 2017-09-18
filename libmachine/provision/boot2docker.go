@@ -190,14 +190,19 @@ func (provisioner *Boot2DockerProvisioner) GetOsReleaseInfo() (*OsRelease, error
 	return provisioner.OsReleaseInfo, nil
 }
 
-func (provisioner *Boot2DockerProvisioner) AttemptIPContact(dockerPort int) {
+func (provisioner *Boot2DockerProvisioner) AttemptIPContact() {
 	ip, err := provisioner.Driver.GetIP()
 	if err != nil {
 		log.Warnf("Could not get IP address for created machine: %s", err)
 		return
 	}
+	port, err := provisioner.Driver.GetPort()
+	if err != nil {
+		log.Warnf("Could not get port number for created machine: %s", err)
+		return
+	}
 
-	if conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ip, dockerPort), 5*time.Second); err != nil {
+	if conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ip, port), 5*time.Second); err != nil {
 		log.Warnf(`
 This machine has been allocated an IP address, but Docker Machine could not
 reach it successfully.
@@ -222,7 +227,7 @@ func (provisioner *Boot2DockerProvisioner) Provision(swarmOptions swarm.Options,
 
 	defer func() {
 		if err == nil {
-			provisioner.AttemptIPContact(engine.DefaultPort)
+			provisioner.AttemptIPContact()
 		}
 	}()
 

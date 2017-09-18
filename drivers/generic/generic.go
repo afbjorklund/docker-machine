@@ -138,6 +138,10 @@ func (d *Driver) Create() error {
 	return nil
 }
 
+func (d *Driver) GetPort() (int, error) {
+	return d.EnginePort, nil
+}
+
 func (d *Driver) GetURL() (string, error) {
 	if err := drivers.MustBeRunning(d); err != nil {
 		return "", err
@@ -148,7 +152,12 @@ func (d *Driver) GetURL() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("tcp://%s", net.JoinHostPort(ip, strconv.Itoa(d.EnginePort))), nil
+	port, err := d.GetPort()
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("tcp://%s", net.JoinHostPort(ip, strconv.Itoa(port))), nil
 }
 
 func (d *Driver) GetState() (state.State, error) {
