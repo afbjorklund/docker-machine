@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	DefaultEnginePort       = 2376
 	DefaultSSHUser          = "root"
 	DefaultSSHPort          = 22
 	DefaultEngineInstallURL = "https://get.docker.com"
@@ -41,6 +42,10 @@ func (d *BaseDriver) GetIP() (string, error) {
 		return "", errors.New("IP address is not set")
 	}
 	return d.IPAddress, nil
+}
+
+func (d *BaseDriver) GetPort() (int, error) {
+	return DefaultEnginePort, nil
 }
 
 // GetSSHKeyPath returns the ssh key path

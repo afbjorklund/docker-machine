@@ -26,6 +26,10 @@ type Driver interface {
 	// e.g. 1.2.3.4 or docker-host-d60b70a14d3a.cloudapp.net
 	GetIP() (string, error)
 
+	// GetPort returns the external port of the engine
+	// e.g. 2376
+	GetPort() (int, error)
+
 	// GetMachineName returns the name of the machine
 	GetMachineName() string
 

@@ -55,6 +55,10 @@ func (d *Driver) GetIP() (string, error) {
 	return "1.2.3.4", NotLoadable{d.Name}
 }
 
+func (d *Driver) GetPort() (int, error) {
+	return 1234, NotLoadable{d.Name}
+}
+
 func (d *Driver) GetSSHHostname() (string, error) {
 	return "", NotLoadable{d.Name}
 }
