@@ -199,7 +199,7 @@ func (provisioner *Boot2DockerProvisioner) AttemptIPContact() {
 	port, err := provisioner.Driver.GetPort()
 	if err != nil {
 		log.Warnf("Could not get port number for created machine: %s", err)
-		return
+		port = engine.DefaultPort
 	}
 
 	if conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ip, port), 5*time.Second); err != nil {
