@@ -15,7 +15,10 @@ var (
 
 // Detect detects user's current shell.
 func Detect() (string, error) {
-	shell := os.Getenv("SHELL")
+	shell, present := os.LookupEnv("SHELL")
+	if !present {
+		shell = getCurrentUserShell()
+	}
 
 	if shell == "" {
 		fmt.Printf("The default lines below are for a sh/bash shell, you can specify the shell you're using, with the --shell flag.\n\n")
