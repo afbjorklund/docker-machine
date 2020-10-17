@@ -204,6 +204,16 @@ func TestParseIPForMACFromIPAddr(t *testing.T) {
 	assert.Equal(t, err, errors.New("Could not find matching IP for MAC address 000000000000"))
 }
 
+func TestParseIPForMACFromIPAddrNoAddress(t *testing.T) {
+	driver := newTestDriver("default")
+
+	ipAddrOutput := "2: eth1:\n    link/ether 11:55:99:dd:ee:ff\n3: docker0:\n    link/ether 01:02:03:04:05:06\n\n        inet 172.17.0.1/16"
+
+	result, err := driver.parseIPForMACFromIPAddr(ipAddrOutput, "115599ddeeff")
+	assert.Equal(t, "", result)
+	assert.Equal(t, errors.New("Could not find matching IP for MAC address 115599ddeeff"), err)
+}
+
 func TestGetIPErrors(t *testing.T) {
 	var tests = []struct {
 		stdOut   string

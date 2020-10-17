@@ -762,6 +762,8 @@ func (d *Driver) parseIPForMACFromIPAddr(ipAddrOutput string, macAddress string)
 			if len(vals) >= 2 {
 				return vals[1][:strings.Index(vals[1], "/")], nil
 			}
+		} else if !strings.HasPrefix(line, "    ") {
+			returnNextIP = false
 		}
 	}
 
